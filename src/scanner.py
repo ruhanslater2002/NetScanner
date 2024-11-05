@@ -1,5 +1,6 @@
 from packethandler import PacketHandler
 from termcolor import colored
+from portservices import PortServices
 
 
 class Scanner:
@@ -19,6 +20,5 @@ class Scanner:
 
             # Checks if response is a SYN-ACK, meaning the port is open
             if response:
-                print(f' | {port:<7} | {colored("OPEN", "green")} \t| [Unknown]')
-            else:
-                print(f' | {port:<7} | {colored("CLOSED", "red")} \t| [Unknown]')
+                port_services: str = PortServices(port).get_port_service()
+                print(f' | {port:<7} | {colored("OPEN", "green")} \t| {port_services}')
