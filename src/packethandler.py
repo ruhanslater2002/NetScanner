@@ -2,8 +2,8 @@ import scapy.all as scapy
 
 
 class PacketHandler:
-    def __init__(self, ipaddress: str):
-        self.ipaddress = ipaddress
+    def __init__(self, target_ip: str):
+        self.ipaddress = target_ip
 
     def send_tcp_packet(self, port: int) -> bool:
         # Create a TCP SYN packet
@@ -25,6 +25,14 @@ class PacketHandler:
         icmp_packet: scapy.packet = scapy.IP(dst=self.ipaddress) / scapy.ICMP()
         # Sends ICMP packet
         response: scapy.packet = scapy.sr1(icmp_packet, timeout=3, verbose=0)
+        if response:
+            return True
+        else:
+            return False
+
+    def send_arp_packet(self, target_mac: str) -> bool:
+        arp_packet: scapy.packet = scapy.Ether(dst=target_mac) / scapy.ARP(pdst=self.ipaddress)
+        response: scapy.packet = scapy.sr1(arp_packet, timeout=3, verbose=0)[0]
         if response:
             return True
         else:

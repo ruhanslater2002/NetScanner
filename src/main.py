@@ -12,4 +12,4 @@ class Main:
 
 
 if __name__ == '__main__':
-    Main("192.168.0.1").start()
+    Main("192.168.0.1/24").start()
