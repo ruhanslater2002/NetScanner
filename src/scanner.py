@@ -4,8 +4,8 @@ from portservices import PortServices
 
 
 class Scanner:
-    def __init__(self, targetip: str):
-        self.targetip = targetip
+    def __init__(self, target_ip: str):
+        self.target_ip = target_ip
         self.minus = colored("-", "red")
         self.plus = colored("+", "green")
 
@@ -16,7 +16,7 @@ class Scanner:
         print(' | PORT    | STATE\t| SERVICE')
         print(' ───────────────────────────────────')
         for port in range(target_port, port_range):
-            packet_handler: PacketHandler = PacketHandler(self.targetip)
+            packet_handler: PacketHandler = PacketHandler(self.target_ip)
             response: bool = packet_handler.send_tcp_packet(port)
 
             # Checks if response is a SYN-ACK, meaning the port is open
@@ -25,9 +25,9 @@ class Scanner:
                 print(f' | {port:<7} | {colored("OPEN", "green")} \t| {port_services}')
 
     def scan_network(self) -> None:
-        packet_handler: PacketHandler = PacketHandler(self.targetip)
+        packet_handler: PacketHandler = PacketHandler(self.target_ip)
         response: bool = packet_handler.send_icmp_packet()
         if response:
-            print(f'[{self.plus}] Response from {colored(self.targetip, "green")}')
+            print(f'[{self.plus}] Response from {colored(self.target_ip, "green")}')
         else:
-            print(f'[{self.minus}] No response from {colored(self.targetip, "green")}')
+            print(f'[{self.minus}] No response from {colored(self.target_ip, "green")}')
