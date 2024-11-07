@@ -2,13 +2,12 @@ import scapy.all as scapy
 
 
 class PacketHandler:
-    def __init__(self, ipaddress: str, port: int):
+    def __init__(self, ipaddress: str):
         self.ipaddress = ipaddress
-        self.port = port
 
-    def send_tcp_packet(self) -> bool:
+    def send_tcp_packet(self, port: int) -> bool:
         # Create a TCP SYN packet
-        tcp_packet: scapy.Packet = scapy.IP(dst=self.ipaddress) / scapy.TCP(dport=self.port, flags="S")
+        tcp_packet: scapy.Packet = scapy.IP(dst=self.ipaddress) / scapy.TCP(dport=port, flags="S")
 
         # Send the packet and wait for a single response
         response: scapy.Packet = scapy.sr1(tcp_packet, timeout=1, verbose=0)
@@ -20,3 +19,13 @@ class PacketHandler:
             if tcp_layer and tcp_layer.flags == "SA":
                 return True
         return False
+
+    def send_icmp_packet(self) -> bool:
+        # Creates ICMP Packet
+        icmp_packet: scapy.packet = scapy.IP(dst=self.ipaddress) / scapy.ICMP()
+        # Sends ICMP packet
+        response: scapy.packet = scapy.sr1(icmp_packet, timeout=3, verbose=0)
+        if response:
+            return True
+        else:
+            return False
