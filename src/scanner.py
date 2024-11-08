@@ -36,8 +36,8 @@ class Scanner:
             response = packet_handler.send_icmp_packet()
             if response:
                 responses.append(str(ip))  # Append the actual responding IP
-        count: int = 0
+
+        # Display results
         for response in responses:
-            count = count + 1
             print(f'[{self.plus}] Response from {colored(response, "green")}')
-        print(f'[{self.plus}] Found {count} hosts.')
+        print(f'[{self.plus}] Found {len(responses)} hosts.')
