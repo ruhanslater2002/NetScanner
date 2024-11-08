@@ -40,4 +40,4 @@ class Scanner:
         # Display results
         for response in responses:
             print(f'[{self.plus}] Response from {colored(response, "green")}')
-        print(f'\n[{self.plus}] Found {len(responses)} hosts.')
+        print(f'\n[{self.plus}] Found {colored(len(responses), "green")} hosts.')
