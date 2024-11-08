@@ -28,17 +28,25 @@ class Scanner:
     def scan_network(self) -> None:
         print(f"[*] Scanning network {self.target_ip}")
         responses = []
+        try:
+            # Generate all IPs in the subnet
+            subnet = ipaddress.ip_network(self.target_ip, strict=False)
+            for ip in subnet.hosts():
+                packet_handler = PacketHandler(str(ip))
+                response = packet_handler.send_icmp_packet()
+                if response:
+                    responses.append(str(ip))  # Append the actual responding IP
 
-        # Generate all IPs in the subnet
-        subnet = ipaddress.ip_network(self.target_ip, strict=False)
-        for ip in subnet.hosts():
-            packet_handler = PacketHandler(str(ip))
-            response = packet_handler.send_icmp_packet()
-            if response:
-                responses.append(str(ip))  # Append the actual responding IP
+            # Display results
+            host_count = len(responses)
+            print(f'\n[{self.plus}] Found {colored(host_count, "green")} hosts.')
+            for response in responses:
+                print(f'[{self.plus}] Response from {colored(response, "green")}')
 
-        # Display results
-        print(f'[{self.plus}] Found {colored(len(responses), "green")} hosts.')
-        print('')
-        for response in responses:
-            print(f'[{self.plus}] Response from {colored(response, "green")}')
+        except Exception as e:
+            print(f"[{self.minus}] Error occurred during scan: {e}")
+            # Optionally, display any partial results collected before the error
+            if responses:
+                print(f'\n[{self.plus}] Found {colored(len(responses), "green")} hosts before error.')
+                for response in responses:
+                    print(f'[{self.plus}] Response from {colored(response, "green")}')
