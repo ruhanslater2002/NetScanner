@@ -38,6 +38,7 @@ class Scanner:
                 responses.append(str(ip))  # Append the actual responding IP
 
         # Display results
+        print(f'[{self.plus}] Found {colored(len(responses), "green")} hosts.')
+        print('')
         for response in responses:
             print(f'[{self.plus}] Response from {colored(response, "green")}')
-        print(f'\n[{self.plus}] Found {colored(len(responses), "green")} hosts.')
