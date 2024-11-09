@@ -1,4 +1,5 @@
 import scapy.all as scapy
+from scapy.plist import SndRcvList
 
 
 class PacketHandler:
@@ -30,10 +31,7 @@ class PacketHandler:
         else:
             return False
 
-    def send_arp_packet(self, target_mac: str) -> bool:
+    def send_arp_packet(self, target_mac: str) -> SndRcvList:
         arp_packet: scapy.packet = scapy.Ether(dst=target_mac) / scapy.ARP(pdst=self.ipaddress)
-        response: scapy.packet = scapy.sr1(arp_packet, timeout=3, verbose=0)[0]
-        if response:
-            return True
-        else:
-            return False
+        responses: scapy.packet = scapy.srp(arp_packet, timeout=3, verbose=0)[0]
+        return responses
