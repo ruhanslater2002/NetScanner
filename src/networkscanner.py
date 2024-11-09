@@ -53,7 +53,7 @@ class NetworkScanner:
                 devices.append({'ip': ip, 'mac': mac, 'hostname': hostname})
             #  Prints results
             for device in devices:
-                print(f"[{self.plus}] "
+                print(f"[{self.plus}] Found -> "
                       f"IP: {colored(device['ip'], "green")}, "
                       f"MAC: {colored(device['mac'], "green")}, "
                       f"HOSTNAME: {colored(device['hostname'], "green")}")
