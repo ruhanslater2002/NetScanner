@@ -16,6 +16,7 @@ class Scanner:
         self.plus = colored("+", "green")
 
     def scan_ports(self, target_port: int, port_range: int) -> None:
+        print(f"[*] Scanning ports on {colored(self.target_ip, 'green')}")
         if port_range < target_port:
             port_range = target_port + port_range + 1
         print('')
@@ -31,7 +32,7 @@ class Scanner:
                 print(f' | {port:<7} | {colored("OPEN", "green")} \t| {port_services}')
 
     def scan_network_icmp(self) -> None:
-        print(f"[*] Scanning network {self.target_ip}")
+        print(f"[*] Scanning network {colored(self.target_ip, 'green')}")
         responses = []
         try:
             # Generate all IPs in the subnet
@@ -57,7 +58,7 @@ class Scanner:
                     print(f'[{self.plus}] Response from {colored(response, "green")}')
 
     def scan_network_arp(self):
-        print(f"[*] Scanning network {self.target_ip}")
+        print(f"[*] Scanning network {colored(self.target_ip, 'green')}")
         try:
             devices: list = []
             packet_handler: PacketHandler = PacketHandler(self.target_ip)
