@@ -1,9 +1,6 @@
 import ipaddress
 import socket
-
-import scapy
 from scapy.plist import SndRcvList
-
 from packethandler import PacketHandler
 from termcolor import colored
 from portservices import PortServices
@@ -16,7 +13,7 @@ class Scanner:
         self.plus = colored("+", "green")
 
     def scan_ports(self, target_port: int, port_range: int) -> None:
-        print(f"[*] Scanning ports on {colored(self.target_ip, 'green')}")
+        print(f"[*] Scanning ports on {colored(self.target_ip, 'green')}\n")
         if port_range < target_port:
             port_range = target_port + port_range + 1
         print('')
@@ -32,7 +29,7 @@ class Scanner:
                 print(f' | {port:<7} | {colored("OPEN", "green")} \t| {port_services}')
 
     def scan_network_icmp(self) -> None:
-        print(f"[*] Scanning network {colored(self.target_ip, 'green')}")
+        print(f"[*] Scanning network {colored(self.target_ip, 'green')}\n")
         responses = []
         try:
             # Generate all IPs in the subnet
@@ -58,21 +55,27 @@ class Scanner:
                     print(f'[{self.plus}] Response from {colored(response, "green")}')
 
     def scan_network_arp(self):
-        print(f"[*] Scanning network {colored(self.target_ip, 'green')}")
+        print(f"[*] Scanning network {colored(self.target_ip, 'green')}\n")
         try:
-            devices: list = []
-            packet_handler: PacketHandler = PacketHandler(self.target_ip)
-            responses: SndRcvList = packet_handler.send_arp_packet("ff:ff:ff:ff:ff:ff")
-            for sent, response in responses:
-                ip: str = response.psrc
+            devices = []
+            device_count = 0
+            packet_handler = PacketHandler(self.target_ip)
+            responses = packet_handler.send_arp_packet("ff:ff:ff:ff:ff:ff")
+            for _, response in responses:
+                ip = response.psrc
+                mac = response.hwsrc
                 try:
-                    hostname: str = socket.gethostbyaddr(ip)[0]
+                    hostname = socket.gethostbyaddr(ip)[0]
                 except socket.herror:
-                    hostname: str = "Unknown"
-                devices.append({'ip': ip, 'mac': response.hwsrc, 'hostname': hostname})
-            print("IP\t\tMAC Address\t\tHostname")
-            print("-" * 60)
+                    hostname = "Unknown"
+                devices.append({'ip': ip, 'mac': mac, 'hostname': hostname})
+            #  Prints results
             for device in devices:
-                print(f"{device['ip']}\t{device['mac']}\t{device['hostname']}")
+                print(f"[{self.plus}] "
+                      f"IP: {colored(device['ip'], "green")}, "
+                      f"MAC: {colored(device['mac'], "green")}, "
+                      f"HOSTNAME: {colored(device['hostname'], "green")}")
+                device_count += 1
+            print(f"\n[{self.plus}] There are {colored(device_count, 'green')} devices found.\n")
         except Exception as e:
             print(f"[{self.minus}] Error occurred during scan: {e}")
