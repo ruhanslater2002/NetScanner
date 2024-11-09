@@ -11,7 +11,7 @@ class PacketHandler:
         tcp_packet: scapy.Packet = scapy.IP(dst=self.ipaddress) / scapy.TCP(dport=port, flags="S")
 
         # Send the packet and wait for a single response
-        response: scapy.Packet = scapy.sr1(tcp_packet, timeout=1, verbose=0)
+        response: scapy.Packet = scapy.sr1(tcp_packet, timeout=3, verbose=0)
 
         # Check if a response was received
         if response:
@@ -33,5 +33,5 @@ class PacketHandler:
 
     def send_arp_packet(self, target_mac: str) -> SndRcvList:
         arp_packet: scapy.packet = scapy.Ether(dst=target_mac) / scapy.ARP(pdst=self.ipaddress)
-        responses: scapy.packet = scapy.srp(arp_packet, timeout=3, verbose=0)[0]
+        responses: scapy.packet = scapy.srp(arp_packet, timeout=4, verbose=0)[0]
         return responses

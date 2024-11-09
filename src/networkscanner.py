@@ -36,7 +36,7 @@ class NetworkScanner:
                 for response in responses:
                     print(f'[{self.plus}] Response from {colored(response, "green")}')
 
-    def scan_network_arp(self):
+    def scan_network_arp(self) -> None:
         print(f"[*] Scanning network {colored(self.target_ip, 'green')}\n")
         try:
             devices = []
