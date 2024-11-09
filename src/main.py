@@ -7,7 +7,7 @@ class Main:
         self.scanner: Scanner = Scanner(self.target_ip)
 
     def start(self) -> None:
-        self.scanner.scan_network_arp()
+        self.scanner.scan_network()
         # scanner.scan_ports(155)
 
 
