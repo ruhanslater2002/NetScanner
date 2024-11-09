@@ -1,6 +1,5 @@
 import ipaddress
 import socket
-from scapy.plist import SndRcvList
 from packethandler import PacketHandler
 from termcolor import colored
 from portservices import PortServices
