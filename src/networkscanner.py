@@ -11,7 +11,7 @@ class NetworkScanner:
         self.plus = colored("+", "green")
 
     def scan_network_icmp(self) -> None:
-        print(f"[*] Scanning network {colored(self.target_ip, 'green')}\n")
+        print(f"[*] Scanning network {colored(self.target_ip, 'green')} ...\n")
         responses = []
         try:
             # Generate all IPs in the subnet
@@ -37,7 +37,7 @@ class NetworkScanner:
                     print(f'[{self.plus}] Response from {colored(response, "green")}')
 
     def scan_network_arp(self) -> None:
-        print(f"[*] Scanning network {colored(self.target_ip, 'green')}\n")
+        print(f"[*] Scanning network {colored(self.target_ip, 'green')} ...\n")
         try:
             devices = []
             device_count = 0
@@ -49,7 +49,7 @@ class NetworkScanner:
                 try:
                     hostname = socket.gethostbyaddr(ip)[0]
                 except socket.herror:
-                    hostname = "Unknown"
+                    hostname = colored("Unknown", "red")
                 devices.append({'ip': ip, 'mac': mac, 'hostname': hostname})
             #  Prints results
             for device in devices:
