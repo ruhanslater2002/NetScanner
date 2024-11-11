@@ -37,4 +37,8 @@ class PortScanner:
             )
         print('')
         # Final summary log
-        self.logger.info(f'Found {colored(len(open_ports_found), "green")} ports open.\n')
+        if len(open_ports_found) > 0:
+            self.logger.info(f'Found {colored(len(open_ports_found), "green")} ports open.\n')
+        else:
+            self.logger.warning(f'Found {colored(len(open_ports_found), "red")} ports open.\n')
+        self.logger.info("Scanning completed.")

@@ -10,7 +10,7 @@ class Main:
 
     def start(self) -> None:
         # self.scanner.scan_network()
-        self.scanner.scan_ports(1, 500)
+        self.scanner.scan_ports(444, 445)
 
 
 if __name__ == '__main__':
