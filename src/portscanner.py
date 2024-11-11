@@ -10,7 +10,7 @@ class PortScanner:
         self.logger = ConsoleLogger("PORT SCANNER")
 
     def scan_ports(self, target_port: int, port_range: int) -> None:
-        self.logger.info(f"Scanning ports on {colored(self.target_ip, 'green')}\n")
+        self.logger.warning(f"Scanning ports on {colored(self.target_ip, 'green')}\n")
         open_ports_found: int = 0
         if port_range < target_port:
             port_range = target_port + port_range + 1

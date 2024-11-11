@@ -11,7 +11,7 @@ class NetworkScanner:
         self.logger = ConsoleLogger("SCANNER")
 
     def scan_network_icmp(self) -> None:
-        self.logger.info(f"Scanning network {colored(self.target_ip, 'green')} ...\n")
+        self.logger.warning(f"Scanning network {colored(self.target_ip, 'green')} ...\n")
         responses = []
         try:
             # Generate all IPs in the subnet
@@ -37,7 +37,7 @@ class NetworkScanner:
                     self.logger.info(f'Response from {colored(response, "green")}')
 
     def scan_network_arp(self) -> None:
-        self.logger.info(f"Scanning {colored(self.target_ip, 'green')} ...\n")
+        self.logger.warning(f"Scanning {colored(self.target_ip, 'green')} ...\n")
         try:
             devices = []
             device_count = 0
