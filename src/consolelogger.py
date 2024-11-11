@@ -1,4 +1,5 @@
 import logging
+from termcolor import colored
 
 
 class ConsoleLogger:
@@ -12,10 +13,10 @@ class ConsoleLogger:
         self.logger.addHandler(console_handler)
 
     def info(self, message: str) -> None:
-        return self.logger.info(message)
+        return self.logger.info("[" + colored("+", "green") + "] " + message)
 
     def warning(self, message: str) -> None:
-        return self.logger.warning(message)
+        return self.logger.warning("[" + colored("*", "yellow") + "] " + message)
 
     def error(self, message: str) -> None:
-        return self.logger.error(message)
+        return self.logger.error("[" + colored("-", "red") + "] " + message)
