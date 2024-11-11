@@ -1,6 +1,5 @@
 from scanner import Scanner
 import argparse
-from termcolor import colored
 
 
 class Main:
