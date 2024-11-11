@@ -20,7 +20,7 @@ class PacketHandler:
         # Check if a response was received
         if response:
             # Get the TCP layer from the response
-            tcp_layer = response.getlayer(scapy.TCP)
+            tcp_layer: str = response.getlayer(scapy.TCP)
 
             # Handle SYN flag (SYN scan)
             if request_flag == "S":
