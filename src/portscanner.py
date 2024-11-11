@@ -58,7 +58,8 @@ class PortScanner:
         # Log open or filtered ports with their service names
         for open_port in open_ports:
             port_services: str = PortServices(open_port['port']).get_port_service()
-            self.logger.info(f'PORT {colored(open_port["port"], "green")} ({port_services}) is {colored(open_port["status"], "green")}')
+            self.logger.info(f'PORT {colored(open_port["port"], "green")} ({port_services}) '
+                             f'is {colored(open_port["status"], "green")}')
         print('')
 
         # Final summary log
