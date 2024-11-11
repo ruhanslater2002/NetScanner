@@ -10,17 +10,31 @@ class PortScanner:
         self.logger = ConsoleLogger("PORT SCANNER")
 
     def scan_ports(self, target_port: int, port_range: int) -> None:
+        # Start scan message
         self.logger.warning(f"Scanning ports on {colored(self.target_ip, 'green')} ...\n")
-        open_ports_found: int = 0
+
+        # Initialize list to collect open ports
+        open_ports_found = []
+
+        # Define port range to scan
         if port_range < target_port:
             port_range = target_port + port_range + 1
+
+        # Iterate through ports to scan
         for port in range(target_port, port_range):
-            packet_handler: PacketHandler = PacketHandler(self.target_ip)
-            response: bool = packet_handler.send_tcp_packet(port)
-            # Checks if response is a SYN-ACK, meaning the port is open
+            packet_handler = PacketHandler(self.target_ip)
+            response = packet_handler.send_tcp_packet(port)
+
+            # Check if the port is open
             if response:
-                port_services: str = PortServices(port).get_port_service()
-                self.logger.info(f'PORT {colored(port, "green")} ({port_services}) is {colored("OPEN", "green")}')
-                open_ports_found += 1
+                open_ports_found.append({'port': port, 'status': 'OPEN'})
+
+        # Log open ports with their service names
+        for open_port in open_ports_found:
+            port_services = PortServices(open_port['port']).get_port_service()
+            self.logger.info(
+                f'PORT {colored(open_port["port"], "green")} ({port_services}) is {colored("OPEN", "green")}'
+            )
         print('')
-        self.logger.info(f'Found {colored(open_ports_found, "green")} ports open.\n')
+        # Final summary log
+        self.logger.info(f'Found {colored(len(open_ports_found), "green")} ports open.\n')

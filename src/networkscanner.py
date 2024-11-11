@@ -39,8 +39,8 @@ class NetworkScanner:
     def scan_network_arp(self) -> None:
         self.logger.warning(f"Scanning {colored(self.target_ip, 'green')} ...\n")
         try:
-            devices = []
-            device_count = 0
+            devices: list = []
+            device_count: int = 0
             packet_handler = PacketHandler(self.target_ip)
             responses = packet_handler.send_arp_packet("ff:ff:ff:ff:ff:ff")
             for _, response in responses:
