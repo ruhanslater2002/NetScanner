@@ -12,8 +12,8 @@ class PortScanner:
 
     def scan_ports(self, target_port: int, port_range: int) -> None:
         # Start scan message
-        self.logger.warning(f"Scanning ports ({colored(f"{target_port} " + "-" + f" {port_range}", "green")}) "
-                            f"on {colored(self.target_ip, 'green')} using {colored(self.flag, "green")} flag ...\n")
+        self.logger.warning(f"Scanning ports ({colored(f'{target_port} - {port_range}', 'green')}) "
+                            f"on {colored(self.target_ip, 'green')} using {colored(self.flag, 'green')} flag ...\n")
 
         # Initialize list to collect open or filtered ports
         open_ports: list = []
@@ -47,6 +47,12 @@ class PortScanner:
                     open_ports.append({'port': port, 'status': 'OPEN'})
                 elif self.flag == "E":  # ECN Echo scan
                     # No response (RST) means port is closed; otherwise, it's likely open
+                    open_ports.append({'port': port, 'status': 'OPEN'})
+                elif self.flag == "FPU":  # Xmas scan
+                    # No response or RST means port is open
+                    open_ports.append({'port': port, 'status': 'OPEN'})
+                elif self.flag == "":  # Null scan
+                    # No flags means the port is open if there is no RST response
                     open_ports.append({'port': port, 'status': 'OPEN'})
 
         # Log open or filtered ports with their service names

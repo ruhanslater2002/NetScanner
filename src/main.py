@@ -23,7 +23,11 @@ class Main:
         self.parser.add_argument("-fps", "--fin-port-scan", action="store_true", help="Perform a FIN port scan.")
         self.parser.add_argument("-xps", "--xmas-port-scan", action="store_true", help="Perform a Xmas port scan.")
         self.parser.add_argument("-nps", "--null-port-scan", action="store_true", help="Perform a Null port scan.")
-        self.parser.add_argument("-p", "--port-range", nargs=2, type=int, metavar=('START_PORT', 'END_PORT'),
+        self.parser.add_argument("-pss", "--push-port-scan", action="store_true", help="Perform a PSH port scan.")
+        self.parser.add_argument("-urs", "--urg-port-scan", action="store_true", help="Perform a URG port scan.")
+        self.parser.add_argument("-rss", "--rst-port-scan", action="store_true", help="Perform a RST port scan.")
+        self.parser.add_argument("-ecs", "--ecn-port-scan", action="store_true", help="Perform an ECN port scan.")
+        self.parser.add_argument("-ps", "--port-range", nargs=2, type=int, metavar=('START_PORT', 'END_PORT'),
                                  help="Range of ports to scan (start and end port).")
 
         self.args = self.parser.parse_args()
@@ -53,8 +57,26 @@ class Main:
             start_port, end_port = (self.args.port_range if self.args.port_range else (0, 80))
             self.scanner.scan_ports(start_port, end_port, "")  # Null scan with no flags
 
+        if self.args.push_port_scan:
+            start_port, end_port = (self.args.port_range if self.args.port_range else (0, 80))
+            self.scanner.scan_ports(start_port, end_port, "P")  # PSH scan with "P" flag
+
+        if self.args.urg_port_scan:
+            start_port, end_port = (self.args.port_range if self.args.port_range else (0, 80))
+            self.scanner.scan_ports(start_port, end_port, "U")  # URG scan with "U" flag
+
+        if self.args.rst_port_scan:
+            start_port, end_port = (self.args.port_range if self.args.port_range else (0, 80))
+            self.scanner.scan_ports(start_port, end_port, "R")  # RST scan with "R" flag
+
+        if self.args.ecn_port_scan:
+            start_port, end_port = (self.args.port_range if self.args.port_range else (0, 80))
+            self.scanner.scan_ports(start_port, end_port, "E")  # ECN scan with "E" flag
+
         if not any([self.args.scan_network, self.args.syn_port_scan, self.args.ack_port_scan,
-                    self.args.fin_port_scan, self.args.xmas_port_scan, self.args.null_port_scan]):
+                    self.args.fin_port_scan, self.args.xmas_port_scan, self.args.null_port_scan,
+                    self.args.push_port_scan, self.args.urg_port_scan, self.args.rst_port_scan,
+                    self.args.ecn_port_scan]):
             print("Please specify a scan option, e.g., -sn for network scan or -sps for SYN port scan.")
 
 

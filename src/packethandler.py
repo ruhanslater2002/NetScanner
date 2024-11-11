@@ -71,13 +71,31 @@ class PacketHandler:
                 else:
                     return False  # Port is closed or filtered
 
+            # Handle Xmas scan (FPU flags)
+            elif request_flag == "FPU":
+                if tcp_layer and tcp_layer.flags == "FPU":
+                    return True  # Port is open (FPU flags received)
+                elif not tcp_layer:
+                    return True  # Port is open (no response is typical for Xmas scan)
+                else:
+                    return False  # Port is closed or filtered
+
+            # Handle Null scan (no flags)
+            elif request_flag == "":
+                if tcp_layer and tcp_layer.flags == "":
+                    return True  # Port is open (no flags received)
+                else:
+                    return False  # Port is closed or filtered
+
         # If no response or response not matching the expected flags, return False (port likely filtered)
         return False
 
     def send_icmp_packet(self) -> bool:
-        # Creates ICMP Packet
+        """
+        Sends an ICMP packet to check if the target IP is reachable.
+        Returns True if the host is reachable, False otherwise.
+        """
         icmp_packet: scapy.packet = scapy.IP(dst=self.ipaddress) / scapy.ICMP()
-        # Sends ICMP packet and waits for a response
         response: scapy.packet = scapy.sr1(icmp_packet, timeout=3, verbose=0)
         if response:
             return True  # Responded, so host is reachable
@@ -85,6 +103,10 @@ class PacketHandler:
             return False  # No response, host unreachable
 
     def send_arp_packet(self, target_mac: str) -> SndRcvList:
+        """
+        Sends an ARP packet to the target MAC address.
+        Returns the list of responses.
+        """
         arp_packet: scapy.packet = scapy.Ether(dst=target_mac) / scapy.ARP(pdst=self.ipaddress)
         responses: scapy.packet = scapy.srp(arp_packet, timeout=4, verbose=0)[0]
         return responses
