@@ -8,7 +8,7 @@ from consolelogger import ConsoleLogger
 class NetworkScanner:
     def __init__(self, target_ip):
         self.target_ip = target_ip
-        self.logger = ConsoleLogger("SCANNER")
+        self.logger = ConsoleLogger("NET-SCANNER")
 
     def scan_network_icmp(self) -> None:
         self.logger.warning(f"Scanning network {colored(self.target_ip, 'green')} ...\n")
@@ -44,8 +44,8 @@ class NetworkScanner:
             packet_handler = PacketHandler(self.target_ip)
             responses = packet_handler.send_arp_packet("ff:ff:ff:ff:ff:ff")
             for _, response in responses:
-                ip = response.psrc
-                mac = response.hwsrc
+                ip: str = response.psrc
+                mac: str = response.hwsrc
                 try:
                     hostname = socket.gethostbyaddr(ip)[0]
                 except socket.herror:
