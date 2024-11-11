@@ -10,6 +10,6 @@ class Scanner:
         network_scanner: NetworkScanner = NetworkScanner(self.target_ip)
         network_scanner.scan_network_arp()
 
-    def scan_ports(self, target_port: int, port_range: int) -> None:
-        port_scanner: PortScanner = PortScanner(self.target_ip)
+    def scan_ports(self, target_port: int, port_range: int, tcp_flag: str) -> None:
+        port_scanner: PortScanner = PortScanner(self.target_ip, tcp_flag)
         port_scanner.scan_ports(target_port, port_range)

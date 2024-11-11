@@ -6,9 +6,9 @@ class PacketHandler:
     def __init__(self, target_ip: str):
         self.ipaddress = target_ip
 
-    def send_tcp_packet(self, port: int) -> bool:
+    def send_tcp_packet(self, port: int, flag: str) -> bool:
         # Create a TCP SYN packet
-        tcp_packet: scapy.Packet = scapy.IP(dst=self.ipaddress) / scapy.TCP(dport=port, flags="S")
+        tcp_packet: scapy.Packet = scapy.IP(dst=self.ipaddress) / scapy.TCP(dport=port, flags=flag)
 
         # Send the packet and wait for a single response
         response: scapy.Packet = scapy.sr1(tcp_packet, timeout=3, verbose=0)

@@ -5,8 +5,9 @@ from consolelogger import ConsoleLogger
 
 
 class PortScanner:
-    def __init__(self, target_ip: str):
+    def __init__(self, target_ip: str, tcp_flag: str):
         self.target_ip = target_ip
+        self.flag = tcp_flag
         self.logger = ConsoleLogger("PORT-SCANNER")
 
     def scan_ports(self, target_port: int, port_range: int) -> None:
@@ -20,7 +21,7 @@ class PortScanner:
         # Iterate through ports to scan
         for port in range(target_port, port_range):
             packet_handler = PacketHandler(self.target_ip)
-            response = packet_handler.send_tcp_packet(port)
+            response = packet_handler.send_tcp_packet(port, self.flag)
 
             # Check if the port is open
             if response:
