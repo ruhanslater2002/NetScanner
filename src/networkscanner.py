@@ -2,16 +2,16 @@ import ipaddress
 import socket
 from termcolor import colored
 from packethandler import PacketHandler
+from consolelogger import ConsoleLogger
 
 
 class NetworkScanner:
     def __init__(self, target_ip):
         self.target_ip = target_ip
-        self.minus = colored("-", "red")
-        self.plus = colored("+", "green")
+        self.logger = ConsoleLogger("SCANNER")
 
     def scan_network_icmp(self) -> None:
-        print(f"[*] Scanning network {colored(self.target_ip, 'green')} ...\n")
+        self.logger.info(f"Scanning network {colored(self.target_ip, 'green')} ...\n")
         responses = []
         try:
             # Generate all IPs in the subnet
@@ -24,20 +24,20 @@ class NetworkScanner:
 
             # Display results
             host_count = len(responses)
-            print(f'\n[{self.plus}] Found {colored(host_count, "green")} hosts.')
+            self.logger.info(f'Found {colored(host_count, "green")} hosts.')
             for response in responses:
-                print(f'[{self.plus}] Response from {colored(response, "green")}')
+                self.logger.info(f'Response from {colored(response, "green")}')
 
         except Exception as e:
-            print(f"[{self.minus}] Error occurred during scan: {e}")
+            self.logger.warning(f"Error occurred during scan: {e}")
             # Optionally, display any partial results collected before the error
             if responses:
-                print(f'\n[{self.plus}] Found {colored(len(responses), "green")} hosts before error.')
+                self.logger.info(f'\nFound {colored(len(responses), "green")} hosts before error.')
                 for response in responses:
-                    print(f'[{self.plus}] Response from {colored(response, "green")}')
+                    self.logger.info(f'Response from {colored(response, "green")}')
 
     def scan_network_arp(self) -> None:
-        print(f"[*] Scanning network {colored(self.target_ip, 'green')} ...\n")
+        self.logger.info(f"Scanning {colored(self.target_ip, 'green')} ...\n")
         try:
             devices = []
             device_count = 0
@@ -53,11 +53,14 @@ class NetworkScanner:
                 devices.append({'ip': ip, 'mac': mac, 'hostname': hostname})
             #  Prints results
             for device in devices:
-                print(f"[{self.plus}] Found -> "
-                      f"IP: {colored(device['ip'], "green")}, "
-                      f"MAC: {colored(device['mac'], "green")}, "
-                      f"HOSTNAME: {colored(device['hostname'], "green")}")
+                self.logger.info(
+                    f"Found -> "
+                    f"IP: {colored(device['ip'], 'green')}, "
+                    f"MAC: {colored(device['mac'], 'green')}, "
+                    f"HOSTNAME: {colored(device['hostname'], 'green')}"
+                )
                 device_count += 1
-            print(f"\n[{self.plus}] There are {colored(device_count, 'green')} devices found.\n")
+            print('')
+            self.logger.info(f"There are {colored(device_count, 'green')} devices found.\n")
         except Exception as e:
-            print(f"[{self.minus}] Error occurred during scan: {e}")
+            self.logger.error(f"Error occurred during scan: {e}")
