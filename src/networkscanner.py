@@ -51,7 +51,7 @@ class NetworkScanner:
                 except socket.herror:
                     hostname = colored("Unknown", "red")
                 devices.append({'ip': ip, 'mac': mac, 'hostname': hostname})
-            #  Prints results
+            #  logs results
             for device in devices:
                 self.logger.info(
                     f"[{colored("FOUND", "green")}] "
