@@ -54,7 +54,7 @@ class NetworkScanner:
             #  Prints results
             for device in devices:
                 self.logger.info(
-                    f"Found -> "
+                    f"[{colored("FOUND", "green")}] "
                     f"IP: {colored(device['ip'], 'green')}, "
                     f"MAC: {colored(device['mac'], 'green')}, "
                     f"HOSTNAME: {colored(device['hostname'], 'green')}"
