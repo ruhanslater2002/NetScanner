@@ -12,7 +12,8 @@ class PortScanner:
 
     def scan_ports(self, target_port: int, port_range: int) -> None:
         # Start scan message
-        self.logger.warning(f"Scanning ports on {colored(self.target_ip, 'green')} ...\n")
+        self.logger.warning(f"Scanning ports ({colored(f"{target_port} " + "-" + f" {port_range}", "green")}) "
+                            f"on {colored(self.target_ip, 'green')} using {colored(self.flag, "green")} flag ...\n")
 
         # Initialize list to collect open or filtered ports
         open_ports: list = []
