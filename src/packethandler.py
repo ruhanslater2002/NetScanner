@@ -4,6 +4,7 @@ from scapy.plist import SndRcvList
 
 class PacketHandler:
     def __init__(self, target_ip: str):
+        scapy.conf.verb = 0
         self.ipaddress = target_ip
 
     def send_tcp_packet(self, port: int, request_flag: str) -> bool:
